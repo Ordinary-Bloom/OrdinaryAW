@@ -1,0 +1,15 @@
+# Archivos sensibles y de configuración
+config.php
+*.env
+
+# Logs
+*.log
+error.log
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDEs y editores
+.vscode/
+.idea/
