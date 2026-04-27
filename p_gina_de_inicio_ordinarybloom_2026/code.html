@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OrdinaryBloom | The Digital Florist’s Atelier</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;family=Montserrat:wght@300;400;500;600;700&amp;family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#1a1c1c",
+                      "surface-dim": "#dadada",
+                      "secondary-fixed": "#ffd9dd",
+                      "secondary": "#9d3f53",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed": "#23181d",
+                      "error-container": "#ffdad6",
+                      "on-secondary-container": "#772237",
+                      "on-secondary-fixed-variant": "#7e273c",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface-variant": "#534345",
+                      "secondary-fixed-dim": "#ffb2bd",
+                      "outline-variant": "#d8c1c3",
+                      "on-primary": "#ffffff",
+                      "surface-bright": "#f9f9f9",
+                      "on-primary-fixed-variant": "#762f3f",
+                      "surface-container-highest": "#e2e2e2",
+                      "secondary-container": "#fe8ca0",
+                      "primary-fixed-dim": "#ffb2be",
+                      "surface-variant": "#e2e2e2",
+                      "surface-container-high": "#e8e8e8",
+                      "tertiary-fixed": "#f2dde3",
+                      "on-tertiary-container": "#4c3f43",
+                      "on-tertiary-fixed-variant": "#514348",
+                      "tertiary": "#695a60",
+                      "surface-tint": "#934656",
+                      "on-error": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "surface-container": "#eeeeee",
+                      "on-primary-container": "#702b3b",
+                      "surface-container-low": "#f3f3f3",
+                      "primary-container": "#f294a5",
+                      "surface": "#f9f9f9",
+                      "tertiary-container": "#bdaab0",
+                      "primary-fixed": "#ffd9de",
+                      "background": "#f9f9f9",
+                      "primary": "#934656",
+                      "tertiary-fixed-dim": "#d5c2c7",
+                      "inverse-surface": "#2f3131",
+                      "on-primary-fixed": "#3d0315",
+                      "on-background": "#1a1c1c",
+                      "inverse-on-surface": "#f1f1f1",
+                      "inverse-primary": "#ffb2be",
+                      "on-error-container": "#93000a",
+                      "outline": "#867275",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed": "#400014"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "1.5rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "serif": ["Playfair Display", "Noto Serif", "serif"],
+                      "sans": ["Montserrat", "Manrope", "sans-serif"],
+                      "headline": ["Noto Serif"],
+                      "body": ["Manrope"],
+                      "label": ["Manrope"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-mask {
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface font-sans text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl border-b border-rose-100/20 dark:border-rose-900/20">
+<nav class="flex justify-between items-center px-8 py-4 max-w-full mx-auto">
+<div class="text-2xl font-serif font-bold text-rose-950 dark:text-rose-50 tracking-tight">OrdinaryBloom</div>
+<div class="hidden md:flex items-center space-x-12">
+<a class="font-sans tracking-wide uppercase text-[12px] text-zinc-500 dark:text-zinc-400 hover:text-rose-700 transition-colors" href="#">Growth</a>
+<a class="font-sans tracking-wide uppercase text-[12px] text-zinc-500 dark:text-zinc-400 hover:text-rose-700 transition-colors" href="#">Fitness</a>
+<a class="font-sans tracking-wide uppercase text-[12px] text-zinc-500 dark:text-zinc-400 hover:text-rose-700 transition-colors" href="#">Self-care</a>
+</div>
+<div class="flex items-center space-x-6">
+<button class="material-symbols-outlined text-rose-900 dark:text-rose-200 hover:opacity-80 transition-opacity" data-icon="search">search</button>
+<button class="material-symbols-outlined text-rose-900 dark:text-rose-200 hover:opacity-80 transition-opacity" data-icon="account_circle">account_circle</button>
+</div>
+</nav>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="" class="w-full h-full object-cover" data-alt="Dreamy soft focus garden with pink wildflowers and morning dew, ethereal natural sunlight, editorial botanical photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgEC1SVclATijMTr2dLTPCvhhfciim-bAdFRaOkVcexiOVXuMSwwmXTmENx3OMgUM2FrUf-DCpSzDK6scvKq0C4VZKd_wOGTqhVieNxbTbXfnbiSbsUjQEs1eJI2yCTgxEAXHPmJBKZiZDeu23I18P48-jolgwNbsX-PZODVhLNqLPzo9sSy3H9_WERtu6tUPjhzZdAXyEbF5-QvlPLmTz2_9O7ExMw0D4M69BbEIcRnyJvag3tGKDZvQRmgqKLXvKGmG37hlFsMY"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/60 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-7xl mx-auto px-8 w-full">
+<div class="max-w-2xl">
+<h1 class="text-6xl md:text-8xl font-serif italic text-primary leading-tight mb-6">
+                        The Digital Florist’s Atelier
+                    </h1>
+<p class="text-on-surface-variant text-lg md:text-xl font-light mb-10 leading-relaxed tracking-wide">
+                        Cultivating the art of living well. A curated space where modern mindfulness meets the timeless wisdom of nature. We nurture your growth, one petal at a time.
+                    </p>
+<button class="bg-primary text-on-primary px-10 py-5 rounded-xl font-sans font-semibold uppercase tracking-widest text-sm hover:opacity-90 transition-all active:scale-95 duration-300">
+                        Explore Inspiration
+                    </button>
+</div>
+</div>
+</section>
+<!-- Featured Categories -->
+<section class="py-24 px-8 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Personal Growth -->
+<div class="group bg-primary-fixed p-10 rounded-xl relative overflow-hidden flex flex-col justify-between h-[400px] transition-transform hover:-translate-y-2">
+<div class="absolute -right-12 -top-12 w-48 h-48 bg-primary-container/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+<div>
+<span class="material-symbols-outlined text-primary text-4xl mb-6" data-icon="auto_stories">auto_stories</span>
+<h3 class="text-3xl font-serif text-on-primary-fixed leading-none mb-4">Personal Growth</h3>
+<p class="text-on-primary-fixed-variant font-sans text-sm tracking-wide">Expand your horizon with curated wisdom and mental clarity exercises.</p>
+</div>
+<a class="text-primary font-sans font-bold uppercase text-xs tracking-widest inline-flex items-center gap-2 group-hover:gap-4 transition-all" href="#">
+                        Begin Journey <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<!-- Fitness -->
+<div class="group bg-secondary-fixed p-10 rounded-xl relative overflow-hidden flex flex-col justify-between h-[400px] transition-transform hover:-translate-y-2">
+<div class="absolute -right-12 -top-12 w-48 h-48 bg-secondary-container/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+<div>
+<span class="material-symbols-outlined text-secondary text-4xl mb-6" data-icon="spa">spa</span>
+<h3 class="text-3xl font-serif text-on-secondary-fixed leading-none mb-4">Fitness</h3>
+<p class="text-on-secondary-fixed-variant font-sans text-sm tracking-wide">Gentle movement and metabolic health designed for the intentional life.</p>
+</div>
+<a class="text-secondary font-sans font-bold uppercase text-xs tracking-widest inline-flex items-center gap-2 group-hover:gap-4 transition-all" href="#">
+                        View Rituals <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<!-- Self-care -->
+<div class="group bg-tertiary-fixed p-10 rounded-xl relative overflow-hidden flex flex-col justify-between h-[400px] transition-transform hover:-translate-y-2">
+<div class="absolute -right-12 -top-12 w-48 h-48 bg-tertiary-container/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+<div>
+<span class="material-symbols-outlined text-tertiary text-4xl mb-6" data-icon="favorite">favorite</span>
+<h3 class="text-3xl font-serif text-on-tertiary-fixed leading-none mb-4">Self-care</h3>
+<p class="text-on-tertiary-fixed-variant font-sans text-sm tracking-wide">Sacred rituals and botanical remedies to restore your inner balance.</p>
+</div>
+<a class="text-tertiary font-sans font-bold uppercase text-xs tracking-widest inline-flex items-center gap-2 group-hover:gap-4 transition-all" href="#">
+                        Discover More <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Inspiration Feed (The Gallery) -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-8">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+<div class="max-w-xl">
+<h2 class="text-5xl font-serif italic text-primary-fixed-dim text-primary leading-tight mb-4">Recent Inspirations</h2>
+<p class="text-on-surface-variant uppercase tracking-[0.2em] text-xs">Curated moments for your daily reflection</p>
+</div>
+<button class="text-primary border-b border-primary pb-1 font-sans text-sm font-semibold tracking-widest uppercase hover:opacity-70 transition-opacity">
+                        View All Feed
+                    </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+<!-- Card 1 -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden group">
+<div class="relative h-64 overflow-hidden">
+<img alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" data-alt="Overhead shot of a morning wellness ritual, ceramic tea cup and open journal on linen sheets, soft morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATr5LQqFzIW3F5HkHxaqPw191cnidtMadzbGucjd6LXijPGX_cHzmhBWiqPp3McC-EI0du1ysNXspSCI1H6_DYUKnb_2VasK3EzHT3mpzzm-Si5EliCjFiJMrRn9Lk0saxYavTuwBFTOC9QsHMpmq6Fievk8KlW5WMTujV4EwiQtvX-SHkRDHpQvO7Z6Yc0IgSUJs-OmOJ6jgB6BuOvmCBY_5ET36r9xl1pyzGPJ3JDAE8h6-d61Xr4G2ulUY2p6i16IXKRvvHfjo"/>
+<div class="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<div class="absolute top-4 left-4 bg-white/80 backdrop-blur px-3 py-1 rounded-full">
+<span class="text-[10px] font-sans font-bold tracking-widest text-primary uppercase">Self-care</span>
+</div>
+</div>
+<div class="p-8">
+<h4 class="text-2xl font-serif text-rose-900 mb-3 group-hover:text-primary transition-colors">The Ritual of the Nightly Glow</h4>
+<p class="text-on-surface-variant text-sm font-light leading-relaxed line-clamp-3">
+                                Discover how to transform your evening routine into a sacred ceremony. We explore the botanical oils and breathing patterns that invite true restoration before sleep.
+                            </p>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden group">
+<div class="relative h-64 overflow-hidden">
+<img alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" data-alt="Interior of a minimalist floral atelier with hanging dried flowers and a large wooden work table, artistic aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWx6cLkDbAEOYhVlugPfAkd-BQGooqC4I9q6iqpgj6iYdc6WqhH8cU9SRxfawI9RyPmiqnsOrxN7U7xzbISTsrBK7nmtyFzPQt2GPPwu319oyqDMVP32veFZwuw_aBvHVa_nYrGQn6aXtELLBgpzUjjem9B-51pR4ZvCxM5T_FFkPVJZhRaGMnKfDIstE60mre0jD-qEy783145EGW6vtb2oFpuk1NXEyvWGs8RAdymKUN7Qm0zVa52CoFlPjhFDkSRzlE6HMSOnY"/>
+<div class="absolute top-4 left-4 bg-white/80 backdrop-blur px-3 py-1 rounded-full">
+<span class="text-[10px] font-sans font-bold tracking-widest text-primary uppercase">Growth</span>
+</div>
+</div>
+<div class="p-8">
+<h4 class="text-2xl font-serif text-rose-900 mb-3 group-hover:text-primary transition-colors">Finding Stillness in the Arrangement</h4>
+<p class="text-on-surface-variant text-sm font-light leading-relaxed line-clamp-3">
+                                Ikebana is more than flower arranging; it is a meditation on space and form. Learn how the philosophy of "ma" can be applied to your digital workspace and mind.
+                            </p>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden group">
+<div class="relative h-64 overflow-hidden">
+<img alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" data-alt="Young woman doing yoga in a sun-drenched greenhouse surrounded by lush green tropical plants" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASBSqBv4C7hYIWw866_Fgvown1Z_BKyGEXped27wc7VVK2ljFQrLkbqzkaGjbge22NKnZIe08lfuqQASj6FACwgDxzwr17SfOHw6gqoLgwBh6hH9R_BjeWcaI3SnPO-D31f1YowykHZCxgddlfH9_q6bzvKDF8CfPr1p0g46gZibq3waTkIUp7DC7EjsLgfzh2okloaCw9sfDNXtbzqw4j1muOttte7CFWiZrMYJj26C3AnSyoRJwWY4ofDMcQPfVVR7SLI9e0aZU"/>
+<div class="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<div class="absolute top-4 left-4 bg-white/80 backdrop-blur px-3 py-1 rounded-full">
+<span class="text-[10px] font-sans font-bold tracking-widest text-primary uppercase">Fitness</span>
+</div>
+</div>
+<div class="p-8">
+<h4 class="text-2xl font-serif text-rose-900 mb-3 group-hover:text-primary transition-colors">Movement Like Water</h4>
+<p class="text-on-surface-variant text-sm font-light leading-relaxed line-clamp-3">
+                                Moving your body doesn't always require force. We look at the fluid mobility exercises that mimic the natural swaying of willow trees to strengthen your core and spirit.
+                            </p>
+</div>
+</article>
+</div>
+</div>
+</section>
+<!-- Newsletter Section -->
+<section class="py-24 px-8">
+<div class="max-w-4xl mx-auto text-center">
+<div class="inline-block p-4 rounded-full bg-primary-fixed mb-8">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="mail">mail</span>
+</div>
+<h2 class="text-4xl md:text-5xl font-serif italic text-rose-950 mb-6">The Bloom Letter</h2>
+<p class="text-on-surface-variant font-sans text-sm tracking-widest uppercase mb-12">Weekly botanical wisdom delivered to your sanctuary.</p>
+<form class="flex flex-col md:flex-row gap-4 max-w-lg mx-auto">
+<input class="flex-1 bg-surface-container-low border-none rounded-xl px-6 py-4 font-sans text-xs tracking-widest focus:ring-2 focus:ring-primary/30 transition-all" placeholder="YOUR EMAIL ADDRESS" type="email"/>
+<button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-sans font-bold uppercase tracking-widest text-[10px] hover:opacity-90 transition-opacity shadow-lg shadow-primary/20">
+                        Subscribe
+                    </button>
+</form>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-zinc-50 dark:bg-zinc-900 w-full py-12 px-8 border-t border-rose-100 dark:border-rose-900/30">
+<div class="flex flex-col md:flex-row justify-between items-center gap-8 w-full max-w-7xl mx-auto">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-serif italic text-lg text-rose-900 dark:text-rose-100">OrdinaryBloom</span>
+<p class="font-sans text-sm tracking-widest uppercase text-zinc-400">© 2026 OrdinaryBloom. The Digital Florist’s Atelier.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="font-sans text-sm tracking-widest uppercase text-zinc-400 hover:text-rose-600 transition-colors" href="#">Privacy</a>
+<a class="font-sans text-sm tracking-widest uppercase text-zinc-400 hover:text-rose-600 transition-colors" href="#">Terms</a>
+<a class="font-sans text-sm tracking-widest uppercase text-zinc-400 hover:text-rose-600 transition-colors" href="#">Editorial Policy</a>
+<a class="font-sans text-sm tracking-widest uppercase text-zinc-400 hover:text-rose-600 transition-colors" href="#">Contact</a>
+</div>
+</div>
+</footer>
+<!-- Signature Component: "The Floating Bloom" (Toast-like CTA) -->
+<div class="fixed bottom-8 right-8 z-[100] hidden md:flex items-center gap-4 bg-white/70 backdrop-blur-xl p-4 rounded-xl shadow-xl shadow-primary/5 border border-white/20">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container text-2xl" data-icon="local_florist" style="font-variation-settings: 'FILL' 1;">local_florist</span>
+</div>
+<div>
+<p class="font-serif italic text-primary text-sm leading-none mb-1">New Ritual Unlocked</p>
+<p class="font-sans text-[10px] tracking-widest uppercase text-on-surface-variant">Winter Morning Meditation</p>
+</div>
+<button class="ml-4 material-symbols-outlined text-zinc-400 hover:text-rose-900 text-lg" data-icon="close">close</button>
+</div>
+</body></html>

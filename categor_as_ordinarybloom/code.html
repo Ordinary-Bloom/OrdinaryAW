@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;family=Montserrat:wght@300;400;500;600&amp;family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&amp;family=Manrope:wght@300;400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#d5c2c7",
+                        "surface-variant": "#e2e2e2",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#e8e8e8",
+                        "surface": "#f9f9f9",
+                        "surface-bright": "#f9f9f9",
+                        "on-primary-fixed": "#3d0315",
+                        "background": "#f9f9f9",
+                        "secondary-container": "#fe8ca0",
+                        "on-primary-fixed-variant": "#762f3f",
+                        "secondary-fixed-dim": "#ffb2bd",
+                        "primary-fixed-dim": "#ffb2be",
+                        "outline-variant": "#d8c1c3",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#9d3f53",
+                        "primary-fixed": "#ffd9de",
+                        "on-background": "#1a1c1c",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#4c3f43",
+                        "tertiary-container": "#bdaab0",
+                        "surface-container": "#eeeeee",
+                        "on-secondary-fixed-variant": "#7e273c",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-secondary-fixed": "#400014",
+                        "on-secondary-container": "#772237",
+                        "on-surface-variant": "#534345",
+                        "on-surface": "#1a1c1c",
+                        "tertiary": "#695a60",
+                        "secondary-fixed": "#ffd9dd",
+                        "on-tertiary-fixed-variant": "#514348",
+                        "outline": "#867275",
+                        "primary-container": "#f294a5",
+                        "tertiary-fixed": "#f2dde3",
+                        "inverse-on-surface": "#f1f1f1",
+                        "inverse-surface": "#2f3131",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#702b3b",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#ffb2be",
+                        "surface-dim": "#dadada",
+                        "primary": "#934656",
+                        "surface-tint": "#934656",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#23181d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Noto Serif", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .font-serif {
+            font-family: 'Noto Serif', serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .editorial-shadow:hover {
+            box-shadow: 0px 12px 32px -4px rgba(147, 70, 86, 0.08);
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface selection:bg-primary-fixed">
+    <!-- TopNavBar -->
+    <nav
+        class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-rose-100/20 flex justify-between items-center px-8 py-4 max-w-full mx-auto">
+        <div class="text-2xl font-serif font-bold text-rose-950">OrdinaryBloom</div>
+        <div class="hidden md:flex items-center gap-8">
+            <a class="text-rose-900 border-b-2 border-rose-400 pb-1 font-sans tracking-wide uppercase text-[12px]"
+                href="#">Growth</a>
+            <a class="text-zinc-500 hover:text-rose-700 transition-colors font-sans tracking-wide uppercase text-[12px]"
+                href="#">Fitness</a>
+            <a class="text-zinc-500 hover:text-rose-700 transition-colors font-sans tracking-wide uppercase text-[12px]"
+                href="#">Self-care</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="material-symbols-outlined text-rose-900 hover:opacity-80 transition-opacity"
+                data-icon="account_circle">account_circle</button>
+        </div>
+    </nav>
+    <main class="pt-24 pb-20">
+        <!-- Editorial Header Section -->
+        <section class="px-8 mb-16 md:mb-24 flex flex-col md:flex-row items-end gap-8">
+            <div class="md:w-3/5">
+                <h1 class="text-6xl md:text-8xl font-serif italic text-rose-900 leading-tight tracking-tight">
+                    Nurture your <br /> <span class="pl-12 md:pl-24">inner garden.</span>
+                </h1>
+                <p class="mt-8 text-on-surface-variant max-w-md font-body leading-relaxed tracking-wide">
+                    A curated selection of pathways designed to elevate your daily existence. From mindful expansion to
+                    physical vitality, explore the pillars of a life well-bloomed.
+                </p>
+            </div>
+            <div class="hidden md:block md:w-2/5 pb-4">
+                <div class="h-px w-full bg-outline-variant/30"></div>
+                <div class="flex justify-between mt-4 font-sans text-[10px] tracking-widest uppercase text-outline">
+                    <span>Curated Experience</span>
+                    <span>Vol. 01 / 2024</span>
+                </div>
+            </div>
+        </section>
+        <!-- Category Grid: Asymmetric Editorial Layout -->
+        <section class="px-8 grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+            <!-- Category 01: Growth (Bento Primary) -->
+            <div class="md:col-span-7 group cursor-pointer">
+                <div
+                    class="relative overflow-hidden rounded-xl aspect-[16/10] bg-surface-container-low transition-transform duration-500 ease-in-out group-hover:scale-[0.99]">
+                    <img alt="Personal Growth" class="w-full h-full object-cover"
+                        data-alt="Close-up of a delicate blooming jasmine flower with soft morning light and morning dew on petals, soft pink and cream tones"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGKOUFw__7rItVgtufYy99q5eJDpa-foZAM7X43CLhrLaouX2pTS_xuNbogjbce4PUkyKABeb9zgDsWQxUEJ8sfKUTiZFPNVKtOlbpCANgcdVXtxWizqOI8fuo8LuGCwOY6jx9gX9-x6IqzXl0evQcREyDRjLM86pTJgO5NVTMNvcx4smF_GVBF0RIclqIagzPV5iej-IbcIUOB7vik5sSYoL2Q_PH_Y1R5brOuldqPHpzAEKfPwzoM3pRDdNM-rQZeBIUBkT8ANY" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
+                    <div
+                        class="absolute top-8 left-8 bg-surface-container-lowest/70 backdrop-blur-md px-6 py-2 rounded-full">
+                        <span
+                            class="text-[10px] font-sans tracking-[0.2em] uppercase text-primary font-semibold">Discovery</span>
+                    </div>
+                </div>
+                <div class="mt-8 flex flex-col md:flex-row md:items-start justify-between gap-4">
+                    <div class="max-w-lg">
+                        <h2 class="text-4xl font-serif italic text-primary">Personal Growth</h2>
+                        <p class="mt-4 text-on-surface-variant font-body leading-relaxed">
+                            Expanding the mind through intentional curiosity and lifelong learning. Discover essays and
+                            exercises designed for the modern intellectual spirit.
+                        </p>
+                    </div>
+                    <button
+                        class="self-start mt-2 px-8 py-3 bg-primary text-on-primary rounded-xl font-sans uppercase tracking-widest text-[11px] font-semibold transition-all hover:opacity-90 editorial-shadow">
+                        Explore
+                    </button>
+                </div>
+            </div>
+            <!-- Category 02: Fitness (Vertical Accent) -->
+            <div class="md:col-span-5 md:mt-24 group cursor-pointer">
+                <div
+                    class="relative overflow-hidden rounded-xl aspect-[4/5] bg-surface-container-low transition-transform duration-500 ease-in-out group-hover:scale-[0.99]">
+                    <img alt="Fitness" class="w-full h-full object-cover"
+                        data-alt="Abstract composition of soft pink ribbons and botanical stems in motion, bright airy lighting, minimalist aesthetic"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3TX58zBHY76jT7S9tPndf7cL5w7KlYsdassxc52sHDo0KMOV8xmukW_FIS0zanL-E6xagE-WvIYcSfOgc4GNPOkxrrD7t0bOTIPIpWAcVZEN3FSwWLUzFItTr_VJtb7bq8YfSGgvmQDNLum4I4koSS4JzU8ku8FM7j5S8_VprGDYpi7pQiJMQwPdeA5CrUnUtyPzWqiiTj5bWa-DVD676RbOfqN3N_Bu9_ac5ESXnQg0ndBwlyAp1Dag2BfqPUC-_Q0b9C07IoBg" />
+                    <div class="absolute inset-0 bg-primary-fixed/10"></div>
+                </div>
+                <div class="mt-8">
+                    <h2 class="text-4xl font-serif italic text-primary">Fitness</h2>
+                    <p class="mt-4 text-on-surface-variant font-body leading-relaxed max-w-sm">
+                        Honoring the vessel. Movement that feels like a celebration rather than a chore, grounded in
+                        botanical rhythm and natural strength.
+                    </p>
+                    <a class="inline-block mt-6 text-primary border-b border-primary/30 pb-1 font-sans uppercase tracking-widest text-[10px] font-bold hover:border-primary transition-all"
+                        href="#">
+                        View Rituals
+                    </a>
+                </div>
+            </div>
+            <!-- Category 03: Self-care (The Floating Bloom Style) -->
+            <div class="md:col-span-12 mt-12">
+                <div
+                    class="bg-primary-fixed/30 rounded-xl p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 relative overflow-hidden">
+                    <!-- Decor background circles -->
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-secondary-container/20 rounded-full blur-3xl">
+                    </div>
+                    <div class="absolute -bottom-12 left-1/4 w-48 h-48 bg-primary-container/20 rounded-full blur-2xl">
+                    </div>
+                    <div class="md:w-1/2 relative z-10">
+                        <div class="inline-flex items-center gap-4 mb-8">
+                            <div
+                                class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center text-on-secondary">
+                                <span class="material-symbols-outlined"
+                                    style="font-variation-settings: 'FILL' 1;">spa</span>
+                            </div>
+                            <span
+                                class="font-sans text-[11px] tracking-[0.3em] uppercase text-on-secondary-fixed-variant font-bold">Signature
+                                Essential</span>
+                        </div>
+                        <h2 class="text-5xl md:text-6xl font-serif italic text-on-secondary-fixed mb-6">Self-care</h2>
+                        <p class="text-on-secondary-fixed-variant font-body text-lg leading-relaxed mb-8">
+                            The art of quiet presence. Our most popular collection of sensory experiences, from
+                            botanical baths to meditative floral arrangement.
+                        </p>
+                        <button
+                            class="bg-secondary text-on-secondary px-10 py-4 rounded-xl font-sans uppercase tracking-widest text-xs font-bold hover:scale-[1.02] transition-transform">
+                            Start Your Ritual
+                        </button>
+                    </div>
+                    <div class="md:w-1/2 relative z-10 flex justify-center">
+                        <div
+                            class="relative w-full max-w-md bg-surface-container-lowest/70 backdrop-blur-xl p-4 rounded-xl shadow-xl shadow-primary/5">
+                            <img alt="Self-care Detail" class="w-full h-[400px] object-cover rounded-lg"
+                                data-alt="Top down view of pink peony petals floating in clear water in a white porcelain bowl, soft sunlight creating ripples"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9c44mkl0m-7bhEJIXHKQsxdRgj0MIMU2VSGe9HT2VJCxFNh5lQuKVrx2ZYH8o1m-B1RRfg0I5GEcZq8iTnmu2Bz4FMEmDuR6uSL6LtATwtfKatz11e7j6SiNN1rdao35SJ3QBM9H5052bPDE7N6UtqouIvhOiJwDxRwRUWo3NfZnHDZvJRhMxHVeuUpv_HCs2wZhDrOo71sScDLLli_jxKANA4J8U487L31q5FZ1KYETefimCEHuFMNcjLCCddx5H_iMdig7BYLI" />
+                            <div
+                                class="absolute -bottom-6 -right-6 bg-surface-container-lowest p-6 rounded-xl shadow-lg max-w-[200px]">
+                                <p class="font-serif italic text-primary text-sm">"Beauty is the shadows of the soul."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Newsletter / Footer Callout -->
+        <section class="mt-32 px-8 text-center max-w-2xl mx-auto">
+            <h3 class="text-2xl font-serif italic text-rose-900 mb-4">Join our Atelier</h3>
+            <p class="font-body text-on-surface-variant uppercase tracking-widest text-[10px] mb-8">Weekly botanical
+                wisdom delivered to your inbox</p>
+            <div class="flex gap-2">
+                <input
+                    class="flex-grow bg-surface-container-lowest border-none rounded-xl px-6 py-4 font-sans text-xs tracking-widest focus:ring-2 focus:ring-primary/20"
+                    placeholder="YOUR EMAIL ADDRESS" type="email" />
+                <button
+                    class="bg-primary text-on-primary px-8 py-4 rounded-xl font-sans uppercase tracking-widest text-xs font-bold transition-opacity hover:opacity-90">Join</button>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer
+        class="w-full py-12 px-8 flex flex-col md:flex-row justify-between items-center gap-8 border-t border-rose-100 bg-zinc-50">
+        <div class="font-serif italic text-lg text-rose-900">OrdinaryBloom</div>
+        <div class="flex gap-8">
+            <a class="font-sans text-sm tracking-widest uppercase text-zinc-400 hover:text-rose-600 transition-colors"
+                href="#">Privacy</a>
+            <a class="font-sans text-sm tracking-widest uppercase text-zinc-400 hover:text-rose-600 transition-colors"
+                href="#">Terms</a>
+            <a class="font-sans text-sm tracking-widest uppercase text-zinc-400 hover:text-rose-600 transition-colors"
+                href="#">Editorial Policy</a>
+            <a class="font-sans text-sm tracking-widest uppercase text-zinc-400 hover:text-rose-600 transition-colors"
+                href="#">Contact</a>
+        </div>
+        <div class="font-sans text-sm tracking-widest uppercase text-rose-900">
+            © 2026 ORDINARY BLOOM. The Digital Florist’s Atelier.
+        </div>
+    </footer>
+</body>
+
+</html>
