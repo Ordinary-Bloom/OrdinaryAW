@@ -41,6 +41,7 @@ Sigue estos pasos para configurar tu propio "Atelier" localmente:
    - Importa el archivo `database.sql` ubicado en la carpeta raíz para crear las tablas y cargar los datos iniciales.
 
 3. **Configurar la Conexión**:
+   - Copia el archivo `config.example.php` y renombralo a `config.php`.
    - Abre el archivo `config.php` y actualiza las constantes con tus credenciales de base de datos local:
      ```php
      define('DB_HOST', 'localhost');
