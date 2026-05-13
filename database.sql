@@ -27,10 +27,10 @@ INSERT INTO categorias (nombre) VALUES
 
 -- Insertar datos de ejemplo reales en 'publicaciones'
 INSERT INTO publicaciones (titulo, descripcion, video_url, id_categoria) VALUES 
-('Glow Up Mental: Hábitos Diarios', 'Descubre cómo transformar tu mentalidad con pequeños pasos constantes.', 'https://vm.tiktok.com/ZNR9BUPQN/', 1),
-('Rutina Full Body - Sin Equipo', 'Entrenamiento intenso y efectivo para tonificar todo el cuerpo en casa.', 'https://vm.tiktok.com/ZNR9BbTAJ/', 2),
-('Skincare Ritual: Piel Radiante', 'Los secretos para una piel luminosa este verano. Productos y técnicas.', 'https://vm.tiktok.com/ZNR9B5VaY/', 3),
-('Confianza y Autoestima', 'Aprende a amarte y proyectar tu mejor versión al mundo.', 'https://vm.tiktok.com/ZNR9BaLPr/', 1);
+('Glow Up Mental: Hábitos Diarios', 'Descubre cómo transformar tu mentalidad con pequeños pasos constantes.', 'https://youtu.be/igec_McVFKY?si=DvGWlz83DpH-2nuw', 1),
+('Rutina Full Body - Sin Equipo', 'Entrenamiento intenso y efectivo para tonificar todo el cuerpo en casa.', 'https://youtu.be/7fSDTZkbO20?si=VRDvtdK6O-XFHtF_', 2),
+('Skincare Ritual: Piel Radiante', 'Los secretos para una piel luminosa este verano. Productos y técnicas.', 'https://youtu.be/32zVmuct7OQ?si=AmZQ_0d1MHK5WcRZ', 3),
+('Confianza y Autoestima', 'Aprende a amarte y proyectar tu mejor versión al mundo.', 'https://youtu.be/xtXf_2s14gg?si=qCH8XcHuS5fxuCPI', 1);
 
 -- Creación de la tabla 'testimonios'
 CREATE TABLE testimonios (
