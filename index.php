@@ -1,16 +1,41 @@
+<?php
+require_once 'db.php';
+
+// Manejo del formulario de testimonios
+$mensaje_exito = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['testimonio_submit'])) {
+    $nombre = $_POST['nombre'] ?? '';
+    $felicidad = $_POST['felicidad'] ?? 10;
+    $experiencia = $_POST['experiencia'] ?? '';
+
+    if (!empty($nombre) && !empty($experiencia)) {
+        try {
+            $stmt = $pdo->prepare("INSERT INTO testimonios (nombre_usuario, nivel_felicidad, experiencia) VALUES (?, ?, ?)");
+            $stmt->execute([$nombre, $felicidad, $experiencia]);
+            $mensaje_exito = "¡Gracias por compartir tu luz con nosotros!";
+        } catch (\PDOException $e) {
+            $error = "No pudimos guardar tu testimonio. Por favor, inténtalo de nuevo.";
+        }
+    }
+}
+
+// Consultas para contenido dinámico
+$categorias = $pdo->query("SELECT * FROM categorias")->fetchAll();
+$publicaciones = $pdo->query("SELECT p.*, c.nombre as categoria_nombre FROM publicaciones p JOIN categorias c ON p.id_categoria = c.id ORDER BY p.fecha DESC")->fetchAll();
+$testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fetchAll();
+?>
 <!DOCTYPE html>
 <html class="light scroll-smooth" lang="es">
 
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>OrdinaryBloom | A Unified Experience</title>
+  <title>OrdinaryBloom | Dynamic Experience</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:wght@300;400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600&display=swap"
     rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="index.css">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script>
     tailwind.config = {
@@ -92,6 +117,8 @@
         <a class="font-sans tracking-[0.2em] uppercase text-[11px] font-bold text-zinc-500 hover:text-primary transition-colors"
           href="#article">Rituales</a>
         <a class="font-sans tracking-[0.2em] uppercase text-[11px] font-bold text-zinc-500 hover:text-primary transition-colors"
+          href="#database-preview">Archivo</a>
+        <a class="font-sans tracking-[0.2em] uppercase text-[11px] font-bold text-zinc-500 hover:text-primary transition-colors"
           href="#contact">Contacto</a>
       </div>
       <div class="flex items-center space-x-6">
@@ -142,62 +169,37 @@
 
     <section class="py-32 px-8 max-w-7xl mx-auto animate-on-scroll">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <?php 
+        $iconos = ['auto_stories', 'spa', 'favorite'];
+        $colores = ['primary', 'secondary', 'tertiary'];
+        foreach ($categorias as $index => $cat): 
+            $color = $colores[$index % 3];
+            $icono = $iconos[$index % 3];
+        ?>
         <div
-          class="group bg-primary-fixed p-12 rounded-[2rem] relative overflow-hidden flex flex-col justify-between h-[450px] transition-all duration-500 hover:-translate-y-4 editorial-shadow hover:shadow-primary/20">
+          class="group bg-<?php echo $color; ?>-fixed p-12 rounded-[2rem] relative overflow-hidden flex flex-col justify-between h-[450px] transition-all duration-500 hover:-translate-y-4 editorial-shadow hover:shadow-<?php echo $color; ?>/20">
           <div
-            class="absolute -right-12 -top-12 w-64 h-64 bg-primary-container/30 rounded-full blur-3xl group-hover:scale-[2] transition-transform duration-1000 ease-out">
+            class="absolute -right-12 -top-12 w-64 h-64 bg-<?php echo $color; ?>-container/30 rounded-full blur-3xl group-hover:scale-[2] transition-transform duration-1000 ease-out">
           </div>
           <div class="relative z-10">
             <div
               class="w-16 h-16 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center mb-8 shadow-sm">
-              <span class="material-symbols-outlined text-primary text-3xl">auto_stories</span>
+              <span class="material-symbols-outlined text-<?php echo $color; ?> text-3xl"><?php echo $icono; ?></span>
             </div>
-            <h3 class="text-3xl font-serif text-on-primary-fixed leading-tight mb-4 tracking-tight">Superación Personal</h3>
-            <p class="text-on-primary-fixed-variant font-sans text-sm tracking-wide leading-relaxed">
-                Expande tu horizonte con sabiduría curada y ejercicios de claridad mental.
+            <h3 class="text-3xl font-serif text-on-<?php echo $color; ?>-fixed leading-tight mb-4 tracking-tight"><?php echo htmlspecialchars($cat['nombre']); ?></h3>
+            <p class="text-on-<?php echo $color; ?>-fixed-variant font-sans text-sm tracking-wide leading-relaxed">
+                <?php 
+                // Descripción simplificada según la categoría
+                if ($cat['nombre'] == 'Superación Personal') echo "Expande tu horizonte con sabiduría curada y ejercicios de claridad mental.";
+                elseif ($cat['nombre'] == 'Fitness') echo "Movimiento suave y salud metabólica diseñados para la vida intencional.";
+                else echo "Rituales sagrados y remedios botánicos para restaurar tu equilibrio interior.";
+                ?>
             </p>
           </div>
           <a class="relative z-10 text-primary font-sans font-bold uppercase text-[11px] tracking-[0.2em] inline-flex items-center gap-3 group-hover:gap-6 bg-white/50 px-6 py-4 rounded-full backdrop-blur-sm self-start transition-all"
             href="#categories">Entrar <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
         </div>
-
-        <div
-          class="group bg-secondary-fixed p-12 rounded-[2rem] relative overflow-hidden flex flex-col justify-between h-[450px] transition-all duration-500 hover:-translate-y-4 md:translate-y-12 editorial-shadow hover:shadow-secondary/20">
-          <div
-            class="absolute -right-12 -top-12 w-64 h-64 bg-secondary-container/30 rounded-full blur-3xl group-hover:scale-[2] transition-transform duration-1000 ease-out">
-          </div>
-          <div class="relative z-10">
-            <div
-              class="w-16 h-16 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center mb-8 shadow-sm">
-              <span class="material-symbols-outlined text-secondary text-3xl">spa</span>
-            </div>
-            <h3 class="text-3xl font-serif text-on-secondary-fixed leading-tight mb-4 tracking-tight">Fitness</h3>
-            <p class="text-on-secondary-fixed-variant font-sans text-sm tracking-wide leading-relaxed">
-                Movimiento suave y salud metabólica diseñados para la vida intencional.
-            </p>
-          </div>
-          <a class="relative z-10 text-primary font-sans font-bold uppercase text-[11px] tracking-[0.2em] inline-flex items-center gap-3 group-hover:gap-6 bg-white/50 px-6 py-4 rounded-full backdrop-blur-sm self-start transition-all"
-            href="#categories">Entrar <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
-        </div>
-
-        <div
-          class="group bg-tertiary-fixed p-12 rounded-[2rem] relative overflow-hidden flex flex-col justify-between h-[450px] transition-all duration-500 hover:-translate-y-4 editorial-shadow hover:shadow-tertiary/20">
-          <div
-            class="absolute -right-12 -top-12 w-64 h-64 bg-tertiary-container/30 rounded-full blur-3xl group-hover:scale-[2] transition-transform duration-1000 ease-out">
-          </div>
-          <div class="relative z-10">
-            <div
-              class="w-16 h-16 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center mb-8 shadow-sm">
-              <span class="material-symbols-outlined text-tertiary text-3xl">favorite</span>
-            </div>
-            <h3 class="text-3xl font-serif text-on-tertiary-fixed leading-tight mb-4 tracking-tight">Cuidado Personal</h3>
-            <p class="text-on-tertiary-fixed-variant font-sans text-sm tracking-wide leading-relaxed">
-                Rituales sagrados y remedios botánicos para restaurar tu equilibrio interior.
-            </p>
-          </div>
-          <a class="relative z-10 text-primary font-sans font-bold uppercase text-[11px] tracking-[0.2em] inline-flex items-center gap-3 group-hover:gap-6 bg-white/50 px-6 py-4 rounded-full backdrop-blur-sm self-start transition-all"
-            href="#categories">Entrar <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
-        </div>
+        <?php endforeach; ?>
       </div>
     </section>
 
@@ -281,77 +283,30 @@
             Moments</button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+          <?php foreach ($publicaciones as $pub): ?>
           <article
             class="bg-white rounded-[2rem] overflow-hidden group editorial-shadow-hover transition-all duration-500 transform hover:-translate-y-4 hover:shadow-2xl cursor-pointer">
             <div class="relative h-80 overflow-hidden">
-              <img alt="Inspiration 1"
-                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+              <img alt="<?php echo htmlspecialchars($pub['titulo']); ?>"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out grayscale-[30%] hover:grayscale-0"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuATr5LQqFzIW3F5HkHxaqPw191cnidtMadzbGucjd6LXijPGX_cHzmhBWiqPp3McC-EI0du1ysNXspSCI1H6_DYUKnb_2VasK3EzHT3mpzzm-Si5EliCjFiJMrRn9Lk0saxYavTuwBFTOC9QsHMpmq6Fievk8KlW5WMTujV4EwiQtvX-SHkRDHpQvO7Z6Yc0IgSUJs-OmOJ6jgB6BuOvmCBY_5ET36r9xl1pyzGPJ3JDAE8h6-d61Xr4G2ulUY2p6i16IXKRvvHfjo" />
               <div
                 class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 <a class="w-20 h-20 rounded-full glass-effect flex items-center justify-center hover:scale-110 transition-transform duration-300"
-                  href="#" target="_blank"><span class="material-symbols-outlined text-white text-4xl"
+                  href="<?php echo htmlspecialchars($pub['video_url']); ?>" target="_blank"><span class="material-symbols-outlined text-white text-4xl"
                     style="font-variation-settings:'FILL' 1;">play_arrow</span></a>
               </div>
               <div class="absolute top-6 left-6 glass-effect px-4 py-2 rounded-full"><span
-                  class="text-[10px] font-sans font-bold tracking-widest text-primary uppercase">Self-care</span></div>
+                  class="text-[10px] font-sans font-bold tracking-widest text-primary uppercase"><?php echo htmlspecialchars($pub['categoria_nombre']); ?></span></div>
             </div>
             <div class="p-10 text-left">
               <h4
                 class="text-3xl font-serif text-rose-950 leading-tight mb-4 group-hover:text-primary transition-colors">
-                The Breath of Dawn</h4>
-              <p class="text-zinc-500 text-sm font-light leading-relaxed line-clamp-3">Discover the transformative power
-                of early morning rituals and how they set the tone for a centered day.</p>
+                <?php echo htmlspecialchars($pub['titulo']); ?></h4>
+              <p class="text-zinc-500 text-sm font-light leading-relaxed line-clamp-3"><?php echo htmlspecialchars($pub['descripcion']); ?></p>
             </div>
           </article>
-
-          <article
-            class="bg-white rounded-[2rem] overflow-hidden group editorial-shadow-hover transition-all duration-500 transform hover:-translate-y-4 hover:shadow-2xl cursor-pointer">
-            <div class="relative h-80 overflow-hidden">
-              <img alt="Inspiration 2"
-                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out grayscale-[30%] hover:grayscale-0"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWx6cLkDbAEOYhVlugPfAkd-BQGooqC4I9q6iqpgj6iYdc6WqhH8cU9SRxfawI9RyPmiqnsOrxN7U7xzbISTsrBK7nmtyFzPQt2GPPwu319oyqDMVP32veFZwuw_aBvHVa_nYrGQn6aXtELLBgpzUjjem9B-51pR4ZvCxM5T_FFkPVJZhRaGMnKfDIstE60mre0jD-qEy783145EGW6vtb2oFpuk1NXEyvWGs8RAdymKUN7Qm0zVa52CoFlPjhFDkSRzlE6HMSOnY" />
-              <div
-                class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <a class="w-20 h-20 rounded-full glass-effect flex items-center justify-center hover:scale-110 transition-transform duration-300"
-                  href="#" target="_blank"><span class="material-symbols-outlined text-white text-4xl"
-                    style="font-variation-settings:'FILL' 1;">play_arrow</span></a>
-              </div>
-              <div class="absolute top-6 left-6 glass-effect px-4 py-2 rounded-full"><span
-                  class="text-[10px] font-sans font-bold tracking-widest text-primary uppercase">Growth</span></div>
-            </div>
-            <div class="p-10 text-left">
-              <h4
-                class="text-3xl font-serif text-rose-950 leading-tight mb-4 group-hover:text-primary transition-colors">
-                Cultivating Patience</h4>
-              <p class="text-zinc-500 text-sm font-light leading-relaxed line-clamp-3">Lessons from the garden: why
-                growth cannot be rushed and the beauty of the slow unfold.</p>
-            </div>
-          </article>
-
-          <article
-            class="bg-white rounded-[2rem] overflow-hidden group editorial-shadow-hover transition-all duration-500 transform hover:-translate-y-4 hover:shadow-2xl cursor-pointer">
-            <div class="relative h-80 overflow-hidden">
-              <img alt="Inspiration 3"
-                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuASBSqBv4C7hYIWw866_Fgvown1Z_BKyGEXped27wc7VVK2ljFQrLkbqzkaGjbge22NKnZIe08lfuqQASj6FACwgDxzwr17SfOHw6gqoLgwBh6hH9R_BjeWcaI3SnPO-D31f1YowykHZCxgddlfH9_q6bzvKDF8CfPr1p0g46gZibq3waTkIUp7DC7EjsLgfzh2okloaCw9sfDNXtbzqw4j1muOttte7CFWiZrMYJj26C3AnSyoRJwWY4ofDMcQPfVVR7SLI9e0aZU" />
-              <div
-                class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <a class="w-20 h-20 rounded-full glass-effect flex items-center justify-center hover:scale-110 transition-transform duration-300"
-                  href="#" target="_blank"><span class="material-symbols-outlined text-white text-4xl"
-                    style="font-variation-settings:'FILL' 1;">play_arrow</span></a>
-              </div>
-              <div class="absolute top-6 left-6 glass-effect px-4 py-2 rounded-full"><span
-                  class="text-[10px] font-sans font-bold tracking-widest text-primary uppercase">Fitness</span></div>
-            </div>
-            <div class="p-10 text-left">
-              <h4
-                class="text-3xl font-serif text-rose-950 leading-tight mb-4 group-hover:text-primary transition-colors">
-                The Flow State</h4>
-              <p class="text-zinc-500 text-sm font-light leading-relaxed line-clamp-3">Integrating movement into your
-                daily workflow for sustained energy and cognitive clarity.</p>
-            </div>
-          </article>
+          <?php endforeach; ?>
         </div>
       </div>
     </section>
@@ -440,77 +395,127 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
+        <?php 
+        $colores_bg = ['primary', 'secondary', 'tertiary'];
+        foreach ($testimonios as $index => $t): 
+            $c_bg = $colores_bg[$index % 3];
+        ?>
         <div class="bg-white p-10 rounded-[2rem] editorial-shadow-hover transition-all duration-500 hover:-translate-y-4 hover:shadow-xl relative break-inside-avoid shadow-sm border border-rose-50">
           <div class="mb-6 flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-primary-fixed rounded-full flex items-center justify-center text-rose-900 font-serif italic text-lg shadow-sm border border-white">
-                S
+              <div class="w-10 h-10 bg-<?php echo $c_bg; ?>-fixed rounded-full flex items-center justify-center text-rose-950 font-serif italic text-lg shadow-sm border border-white uppercase">
+                <?php echo substr($t['nombre_usuario'], 0, 1); ?>
               </div>
               <div>
-                <h4 class="font-bold text-rose-950 font-sans tracking-wide text-sm">Sofía Valente</h4>
-                <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Felicidad: 9/10</p>
+                <h4 class="font-bold text-rose-950 font-sans tracking-wide text-sm"><?php echo htmlspecialchars($t['nombre_usuario']); ?></h4>
+                <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Felicidad: <?php echo htmlspecialchars($t['nivel_felicidad']); ?>/10</p>
               </div>
             </div>
           </div>
           <p class="font-serif italic text-zinc-600 text-lg leading-relaxed relative">
             <span class="absolute -top-4 -left-4 text-4xl text-primary/20 material-symbols-outlined">format_quote</span>
-            El ritual de la mañana ha cambiado completamente mi enfoque diario. Siento una calma que antes creía imposible en mi rutina.
+            <?php echo htmlspecialchars($t['experiencia']); ?>
           </p>
           <div class="mt-6 flex gap-1">
+            <?php for($i=0; $i < ceil($t['nivel_felicidad']/2); $i++): ?>
             <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+            <?php endfor; ?>
           </div>
         </div>
+        <?php endforeach; ?>
+      </div>
+    </section>
 
-        <div class="bg-white p-10 rounded-[2rem] editorial-shadow-hover transition-all duration-500 hover:-translate-y-4 hover:shadow-xl relative break-inside-avoid shadow-sm border border-rose-50">
-          <div class="mb-6 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-secondary-fixed rounded-full flex items-center justify-center text-rose-900 font-serif italic text-lg shadow-sm border border-white">
-                M
-              </div>
-              <div>
-                <h4 class="font-bold text-rose-950 font-sans tracking-wide text-sm">Mateo Rossi</h4>
-                <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Felicidad: 10/10</p>
-              </div>
-            </div>
-          </div>
-          <p class="font-serif italic text-zinc-600 text-lg leading-relaxed relative">
-            <span class="absolute -top-4 -left-4 text-4xl text-primary/20 material-symbols-outlined">format_quote</span>
-            Nunca pensé que el cuidado personal pudiera ser tan profundo. La atención al detalle en cada ritual es simplemente exquisita.
+    <!-- Database Archive Dynamic Section -->
+    <section id="database-preview" class="py-32 bg-stone-50/50 w-full animate-on-scroll border-t border-rose-100/50">
+      <div class="max-w-7xl mx-auto px-8">
+        <div class="text-center mb-20">
+          <h2 class="editorial-title text-5xl md:text-7xl text-rose-950 mb-6 font-serif italic text-primary">Database Archive</h2>
+          <p class="font-body text-xl text-zinc-500 leading-relaxed font-light max-w-2xl mx-auto">
+            A real-time structural overview of our botanical data ecosystem, powered by MySQL.
           </p>
-          <div class="mt-6 flex gap-1">
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-          </div>
         </div>
 
-        <div class="bg-white p-10 rounded-[2rem] editorial-shadow-hover transition-all duration-500 hover:-translate-y-4 hover:shadow-xl relative break-inside-avoid shadow-sm border border-rose-50">
-          <div class="mb-6 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-tertiary-fixed rounded-full flex items-center justify-center text-rose-900 font-serif italic text-lg shadow-sm border border-white">
-                I
-              </div>
-              <div>
-                <h4 class="font-bold text-rose-950 font-sans tracking-wide text-sm">Isabella Conti</h4>
-                <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Felicidad: 8/10</p>
-              </div>
+        <div class="space-y-24">
+          <!-- Categories Table -->
+          <div class="glass-effect rounded-[3rem] p-10 md:p-16 editorial-shadow border border-white">
+            <h3 class="text-2xl font-serif text-rose-950 mb-10 flex items-center gap-4">
+              <span class="material-symbols-outlined text-primary">category</span> Categorías (Tabular)
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left font-sans text-sm">
+                <thead>
+                  <tr class="border-b border-rose-100 text-[10px] uppercase tracking-[0.2em] text-primary font-bold">
+                    <th class="px-6 py-4">ID</th>
+                    <th class="px-6 py-4">Nombre</th>
+                  </tr>
+                </thead>
+                <tbody class="text-rose-900/80">
+                  <?php foreach ($categorias as $cat): ?>
+                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
+                    <td class="px-6 py-4 font-mono text-[10px]"><?php echo $cat['id']; ?></td>
+                    <td class="px-6 py-4"><?php echo htmlspecialchars($cat['nombre']); ?></td>
+                  </tr>
+                  <?php endforeach; ?>
+                </tbody>
+              </table>
             </div>
           </div>
-          <p class="font-serif italic text-zinc-600 text-lg leading-relaxed relative">
-            <span class="absolute -top-4 -left-4 text-4xl text-primary/20 material-symbols-outlined">format_quote</span>
-            Las colecciones botánicas han devuelto la vida a mi hogar. Es un santuario de paz en medio de la ciudad.
-          </p>
-          <div class="mt-6 flex gap-1">
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+
+          <!-- Publications Table -->
+          <div class="glass-effect rounded-[3rem] p-10 md:p-16 editorial-shadow border border-white">
+            <h3 class="text-2xl font-serif text-rose-950 mb-10 flex items-center gap-4">
+              <span class="material-symbols-outlined text-primary">auto_stories</span> Publicaciones (Tabular)
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left font-sans text-sm">
+                <thead>
+                  <tr class="border-b border-rose-100 text-[10px] uppercase tracking-[0.2em] text-primary font-bold">
+                    <th class="px-6 py-4">ID</th>
+                    <th class="px-6 py-4">Título</th>
+                    <th class="px-6 py-4">Cat_ID</th>
+                    <th class="px-6 py-4">Fecha</th>
+                  </tr>
+                </thead>
+                <tbody class="text-rose-900/80">
+                  <?php foreach ($publicaciones as $pub): ?>
+                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
+                    <td class="px-6 py-4 font-mono text-[10px]"><?php echo $pub['id']; ?></td>
+                    <td class="px-6 py-4 font-serif italic"><?php echo htmlspecialchars($pub['titulo']); ?></td>
+                    <td class="px-6 py-4"><?php echo $pub['id_categoria']; ?></td>
+                    <td class="px-6 py-4 text-[10px] text-zinc-400 uppercase tracking-widest"><?php echo $pub['fecha']; ?></td>
+                  </tr>
+                  <?php endforeach; ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Testimonies Table -->
+          <div class="glass-effect rounded-[3rem] p-10 md:p-16 editorial-shadow border border-white">
+            <h3 class="text-2xl font-serif text-rose-950 mb-10 flex items-center gap-4">
+              <span class="material-symbols-outlined text-primary">forum</span> Testimonios (Tabular)
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left font-sans text-sm">
+                <thead>
+                  <tr class="border-b border-rose-100 text-[10px] uppercase tracking-[0.2em] text-primary font-bold">
+                    <th class="px-6 py-4">Usuario</th>
+                    <th class="px-6 py-4">Felicidad</th>
+                    <th class="px-6 py-4">Experiencia</th>
+                  </tr>
+                </thead>
+                <tbody class="text-rose-900/80">
+                  <?php foreach ($testimonios as $t): ?>
+                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
+                    <td class="px-6 py-4"><?php echo htmlspecialchars($t['nombre_usuario']); ?></td>
+                    <td class="px-6 py-4"><span class="bg-primary-fixed px-2 py-1 rounded text-[10px] text-primary font-bold"><?php echo $t['nivel_felicidad']; ?>/10</span></td>
+                    <td class="px-6 py-4 italic"><?php echo htmlspecialchars(substr($t['experiencia'], 0, 80)) . (strlen($t['experiencia']) > 80 ? '...' : ''); ?></td>
+                  </tr>
+                  <?php endforeach; ?>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -518,6 +523,13 @@
 
     <section id="contact"
       class="py-32 w-full max-w-7xl mx-auto px-6 border-t border-rose-100/50 mt-16 animate-on-scroll">
+      <?php if (!empty($mensaje_exito)): ?>
+      <div class="mb-12 p-6 bg-primary-fixed text-on-primary-fixed rounded-2xl flex items-center gap-4 animate-bounce">
+        <span class="material-symbols-outlined">celebration</span>
+        <p class="font-bold uppercase tracking-widest text-[10px]"><?php echo $mensaje_exito; ?></p>
+      </div>
+      <?php endif; ?>
+
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24 items-center">
         <div class="lg:col-span-7">
           <h2 class="editorial-title text-6xl md:text-8xl text-rose-950 leading-none mb-10">Let’s start
@@ -542,26 +554,32 @@
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
         <div class="lg:col-span-8 bg-white rounded-[3rem] p-10 md:p-16 editorial-shadow border border-rose-50">
-          <form class="space-y-12" action="#">
+          <form class="space-y-12" method="POST" action="#contact">
+            <input type="hidden" name="testimonio_submit" value="1">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div class="relative group">
                 <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Your
                   Name</label>
                 <input
+                  name="nombre"
+                  required
                   class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-colors text-rose-950 text-lg placeholder:text-zinc-200 font-body group-hover:border-primary/50"
                   placeholder="Florence Nightingale" type="text" />
               </div>
               <div class="relative group">
-                <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Email
-                  Address</label>
+                <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Nivel de Felicidad (1-10)</label>
                 <input
+                  name="felicidad"
+                  type="number" min="1" max="10" value="10"
                   class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-colors text-rose-950 text-lg placeholder:text-zinc-200 font-body group-hover:border-primary/50"
-                  placeholder="florence@ordinarybloom.com" type="email" />
+                   />
               </div>
             </div>
             <div class="relative group">
-              <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Message</label>
+              <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Experience</label>
               <textarea
+                name="experiencia"
+                required
                 class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-colors text-rose-950 text-xl placeholder:text-zinc-200 font-serif italic resize-none group-hover:border-primary/50"
                 placeholder="How can we help you grow today?" rows="3"></textarea>
             </div>
@@ -595,120 +613,7 @@
       </div>
     </section>
 
-    <section id="database-preview" class="py-32 bg-stone-50/50 w-full animate-on-scroll border-t border-rose-100/50">
-      <div class="max-w-7xl mx-auto px-8">
-        <div class="text-center mb-20">
-          <h2 class="editorial-title text-5xl md:text-7xl text-rose-950 mb-6 font-serif italic text-primary">Database Archive</h2>
-          <p class="font-body text-xl text-zinc-500 leading-relaxed font-light max-w-2xl mx-auto">
-            A structural overview of our botanical data ecosystem, organized into curated relational tables.
-          </p>
-        </div>
-
-        <div class="space-y-24">
-          <!-- Categories Table -->
-          <div class="glass-effect rounded-[3rem] p-10 md:p-16 editorial-shadow border border-white">
-            <h3 class="text-2xl font-serif text-rose-950 mb-10 flex items-center gap-4">
-              <span class="material-symbols-outlined text-primary">category</span> Categorías
-            </h3>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left font-sans text-sm">
-                <thead>
-                  <tr class="border-b border-rose-100 text-[10px] uppercase tracking-[0.2em] text-primary font-bold">
-                    <th class="px-6 py-4">ID</th>
-                    <th class="px-6 py-4">Nombre</th>
-                  </tr>
-                </thead>
-                <tbody class="text-rose-900/80">
-                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
-                    <td class="px-6 py-4 font-mono text-[10px]">1</td>
-                    <td class="px-6 py-4">Superación Personal</td>
-                  </tr>
-                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
-                    <td class="px-6 py-4 font-mono text-[10px]">2</td>
-                    <td class="px-6 py-4">Fitness</td>
-                  </tr>
-                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
-                    <td class="px-6 py-4 font-mono text-[10px]">3</td>
-                    <td class="px-6 py-4">Cuidado Personal</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Publications Table -->
-          <div class="glass-effect rounded-[3rem] p-10 md:p-16 editorial-shadow border border-white">
-            <h3 class="text-2xl font-serif text-rose-950 mb-10 flex items-center gap-4">
-              <span class="material-symbols-outlined text-primary">auto_stories</span> Publicaciones
-            </h3>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left font-sans text-sm">
-                <thead>
-                  <tr class="border-b border-rose-100 text-[10px] uppercase tracking-[0.2em] text-primary font-bold">
-                    <th class="px-6 py-4">ID</th>
-                    <th class="px-6 py-4">Título</th>
-                    <th class="px-6 py-4">Cat_ID</th>
-                    <th class="px-6 py-4">Fecha</th>
-                  </tr>
-                </thead>
-                <tbody class="text-rose-900/80">
-                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
-                    <td class="px-6 py-4 font-mono text-[10px]">1</td>
-                    <td class="px-6 py-4 font-serif italic">El Despertar de la Mañana</td>
-                    <td class="px-6 py-4">1</td>
-                    <td class="px-6 py-4 text-[10px] text-zinc-400 uppercase tracking-widest">2026-05-04</td>
-                  </tr>
-                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
-                    <td class="px-6 py-4 font-mono text-[10px]">2</td>
-                    <td class="px-6 py-4 font-serif italic">Cultivando la Paciencia</td>
-                    <td class="px-6 py-4">1</td>
-                    <td class="px-6 py-4 text-[10px] text-zinc-400 uppercase tracking-widest">2026-05-04</td>
-                  </tr>
-                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
-                    <td class="px-6 py-4 font-mono text-[10px]">3</td>
-                    <td class="px-6 py-4 font-serif italic">El Estado de Flow</td>
-                    <td class="px-6 py-4">2</td>
-                    <td class="px-6 py-4 text-[10px] text-zinc-400 uppercase tracking-widest">2026-05-04</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Testimonies Table -->
-          <div class="glass-effect rounded-[3rem] p-10 md:p-16 editorial-shadow border border-white">
-            <h3 class="text-2xl font-serif text-rose-950 mb-10 flex items-center gap-4">
-              <span class="material-symbols-outlined text-primary">forum</span> Testimonios
-            </h3>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left font-sans text-sm">
-                <thead>
-                  <tr class="border-b border-rose-100 text-[10px] uppercase tracking-[0.2em] text-primary font-bold">
-                    <th class="px-6 py-4">Usuario</th>
-                    <th class="px-6 py-4">Felicidad</th>
-                    <th class="px-6 py-4">Experiencia</th>
-                  </tr>
-                </thead>
-                <tbody class="text-rose-900/80">
-                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
-                    <td class="px-6 py-4">Sofía Valente</td>
-                    <td class="px-6 py-4"><span class="bg-primary-fixed px-2 py-1 rounded text-[10px] text-primary font-bold">9/10</span></td>
-                    <td class="px-6 py-4 italic">El ritual de la mañana ha cambiado completamente...</td>
-                  </tr>
-                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
-                    <td class="px-6 py-4">Mateo Rossi</td>
-                    <td class="px-6 py-4"><span class="bg-primary-fixed px-2 py-1 rounded text-[10px] text-primary font-bold">10/10</span></td>
-                    <td class="px-6 py-4 italic">Nunca pensé que el cuidado personal pudiera ser tan profundo...</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="bg-rose-950 w-full py-16 px-8 text-white rounded-t-[3rem]">
+    <footer class="bg-rose-950 w-full py-16 px-8 mt-16 text-white rounded-t-[3rem]">
       <div class="flex flex-col md:flex-row justify-between items-center gap-12 w-full max-w-7xl mx-auto">
         <div class="flex flex-col items-center md:items-start gap-4 text-center md:text-left">
           <span class="font-serif italic text-4xl font-bold tracking-tight">OrdinaryBloom</span>
