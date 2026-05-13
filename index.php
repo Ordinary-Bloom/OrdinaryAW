@@ -1,22 +1,45 @@
 <?php
 require_once 'db.php';
 
-// Manejo del formulario de testimonios
+// Manejo de mensajes
 $mensaje_exito = "";
+$mensaje_error = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['testimonio_submit'])) {
-    $nombre = $_POST['nombre'] ?? '';
-    $felicidad = $_POST['felicidad'] ?? 10;
-    $experiencia = $_POST['experiencia'] ?? '';
+  $nombre = $_POST['nombre'] ?? '';
+  $felicidad = $_POST['felicidad'] ?? 10;
+  $experiencia = $_POST['experiencia'] ?? '';
 
-    if (!empty($nombre) && !empty($experiencia)) {
-        try {
-            $stmt = $pdo->prepare("INSERT INTO testimonios (nombre_usuario, nivel_felicidad, experiencia) VALUES (?, ?, ?)");
-            $stmt->execute([$nombre, $felicidad, $experiencia]);
-            $mensaje_exito = "¡Gracias por compartir tu luz con nosotros!";
-        } catch (\PDOException $e) {
-            $error = "No pudimos guardar tu testimonio. Por favor, inténtalo de nuevo.";
-        }
+  if (!empty($nombre) && !empty($experiencia)) {
+    try {
+      $stmt = $pdo->prepare("INSERT INTO testimonios (nombre_usuario, nivel_felicidad, experiencia) VALUES (?, ?, ?)");
+      $stmt->execute([$nombre, $felicidad, $experiencia]);
+      $mensaje_exito = "¡Gracias por compartir tu luz con nosotros!";
+    } catch (\PDOException $e) {
+      $mensaje_error = "No pudimos guardar tu testimonio. Error: " . $e->getMessage();
     }
+  } else {
+    $mensaje_error = "Por favor, completa nombre y experiencia.";
+  }
+}
+
+// Manejo del formulario de publicaciones
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['publicacion_submit'])) {
+  $titulo = $_POST['titulo'] ?? '';
+  $id_categoria = $_POST['id_categoria'] ?? '';
+  $descripcion = $_POST['descripcion'] ?? '';
+  $video_url = $_POST['video_url'] ?? '';
+
+  if (!empty($titulo) && !empty($id_categoria) && !empty($descripcion)) {
+    try {
+      $stmt = $pdo->prepare("INSERT INTO publicaciones (titulo, id_categoria, descripcion, video_url) VALUES (?, ?, ?, ?)");
+      $stmt->execute([$titulo, $id_categoria, $descripcion, $video_url]);
+      $mensaje_exito = "¡Tu inspiración ha sido plantada con éxito!";
+    } catch (\PDOException $e) {
+      $mensaje_error = "No pudimos guardar tu publicación. Error: " . $e->getMessage();
+    }
+  } else {
+    $mensaje_error = "Por favor, completa el título, la categoría y la descripción.";
+  }
 }
 
 // Consultas para contenido dinámico
@@ -119,6 +142,8 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
         <a class="font-sans tracking-[0.2em] uppercase text-[11px] font-bold text-zinc-500 hover:text-primary transition-colors"
           href="#database-preview">Archivo</a>
         <a class="font-sans tracking-[0.2em] uppercase text-[11px] font-bold text-zinc-500 hover:text-primary transition-colors"
+          href="#contribution">Contribuir</a>
+        <a class="font-sans tracking-[0.2em] uppercase text-[11px] font-bold text-zinc-500 hover:text-primary transition-colors"
           href="#contact">Contacto</a>
       </div>
       <div class="flex items-center space-x-6">
@@ -129,6 +154,27 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
       </div>
     </nav>
   </header>
+
+  <!-- Global Messages -->
+  <div class="fixed top-24 left-1/2 -translate-x-1/2 z-[60] w-full max-w-lg px-4 pointer-events-none">
+    <?php if (!empty($mensaje_exito)): ?>
+      <div
+        class="p-6 bg-primary-fixed text-on-primary-fixed rounded-2xl flex items-center gap-4 animate-bounce editorial-shadow border border-white pointer-events-auto shadow-2xl">
+        <span class="material-symbols-outlined">celebration</span>
+        <p class="font-bold uppercase tracking-widest text-[10px]"><?php echo $mensaje_exito; ?></p>
+        <button onclick="this.parentElement.remove()" class="ml-auto material-symbols-outlined text-sm">close</button>
+      </div>
+    <?php endif; ?>
+
+    <?php if (!empty($mensaje_error)): ?>
+      <div
+        class="p-6 bg-red-100 text-red-950 rounded-2xl flex items-center gap-4 editorial-shadow border border-red-200 pointer-events-auto shadow-2xl">
+        <span class="material-symbols-outlined">error</span>
+        <p class="font-bold uppercase tracking-widest text-[10px]"><?php echo $mensaje_error; ?></p>
+        <button onclick="this.parentElement.remove()" class="ml-auto material-symbols-outlined text-sm">close</button>
+      </div>
+    <?php endif; ?>
+  </div>
 
   <main class="pt-24">
 
@@ -169,36 +215,41 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
 
     <section class="py-32 px-8 max-w-7xl mx-auto animate-on-scroll">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-        <?php 
+        <?php
         $iconos = ['auto_stories', 'spa', 'favorite'];
         $colores = ['primary', 'secondary', 'tertiary'];
-        foreach ($categorias as $index => $cat): 
-            $color = $colores[$index % 3];
-            $icono = $iconos[$index % 3];
-        ?>
-        <div
-          class="group bg-<?php echo $color; ?>-fixed p-12 rounded-[2rem] relative overflow-hidden flex flex-col justify-between h-[450px] transition-all duration-500 hover:-translate-y-4 editorial-shadow hover:shadow-<?php echo $color; ?>/20">
+        foreach ($categorias as $index => $cat):
+          $color = $colores[$index % 3];
+          $icono = $iconos[$index % 3];
+          ?>
           <div
-            class="absolute -right-12 -top-12 w-64 h-64 bg-<?php echo $color; ?>-container/30 rounded-full blur-3xl group-hover:scale-[2] transition-transform duration-1000 ease-out">
-          </div>
-          <div class="relative z-10">
+            class="group bg-<?php echo $color; ?>-fixed p-12 rounded-[2rem] relative overflow-hidden flex flex-col justify-between h-[450px] transition-all duration-500 hover:-translate-y-4 editorial-shadow hover:shadow-<?php echo $color; ?>/20">
             <div
-              class="w-16 h-16 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center mb-8 shadow-sm">
-              <span class="material-symbols-outlined text-<?php echo $color; ?> text-3xl"><?php echo $icono; ?></span>
+              class="absolute -right-12 -top-12 w-64 h-64 bg-<?php echo $color; ?>-container/30 rounded-full blur-3xl group-hover:scale-[2] transition-transform duration-1000 ease-out">
             </div>
-            <h3 class="text-3xl font-serif text-on-<?php echo $color; ?>-fixed leading-tight mb-4 tracking-tight"><?php echo htmlspecialchars($cat['nombre']); ?></h3>
-            <p class="text-on-<?php echo $color; ?>-fixed-variant font-sans text-sm tracking-wide leading-relaxed">
-                <?php 
+            <div class="relative z-10">
+              <div
+                class="w-16 h-16 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center mb-8 shadow-sm">
+                <span class="material-symbols-outlined text-<?php echo $color; ?> text-3xl"><?php echo $icono; ?></span>
+              </div>
+              <h3 class="text-3xl font-serif text-on-<?php echo $color; ?>-fixed leading-tight mb-4 tracking-tight">
+                <?php echo htmlspecialchars($cat['nombre']); ?>
+              </h3>
+              <p class="text-on-<?php echo $color; ?>-fixed-variant font-sans text-sm tracking-wide leading-relaxed">
+                <?php
                 // Descripción simplificada según la categoría
-                if ($cat['nombre'] == 'Superación Personal') echo "Expande tu horizonte con sabiduría curada y ejercicios de claridad mental.";
-                elseif ($cat['nombre'] == 'Fitness') echo "Movimiento suave y salud metabólica diseñados para la vida intencional.";
-                else echo "Rituales sagrados y remedios botánicos para restaurar tu equilibrio interior.";
+                if ($cat['nombre'] == 'Superación Personal')
+                  echo "Expande tu horizonte con sabiduría curada y ejercicios de claridad mental.";
+                elseif ($cat['nombre'] == 'Fitness')
+                  echo "Movimiento suave y salud metabólica diseñados para la vida intencional.";
+                else
+                  echo "Rituales sagrados y remedios botánicos para restaurar tu equilibrio interior.";
                 ?>
-            </p>
+              </p>
+            </div>
+            <a class="relative z-10 text-primary font-sans font-bold uppercase text-[11px] tracking-[0.2em] inline-flex items-center gap-3 group-hover:gap-6 bg-white/50 px-6 py-4 rounded-full backdrop-blur-sm self-start transition-all"
+              href="#categories">Entrar <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
           </div>
-          <a class="relative z-10 text-primary font-sans font-bold uppercase text-[11px] tracking-[0.2em] inline-flex items-center gap-3 group-hover:gap-6 bg-white/50 px-6 py-4 rounded-full backdrop-blur-sm self-start transition-all"
-            href="#categories">Entrar <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
-        </div>
         <?php endforeach; ?>
       </div>
     </section>
@@ -284,28 +335,33 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
           <?php foreach ($publicaciones as $pub): ?>
-          <article
-            class="bg-white rounded-[2rem] overflow-hidden group editorial-shadow-hover transition-all duration-500 transform hover:-translate-y-4 hover:shadow-2xl cursor-pointer">
-            <div class="relative h-80 overflow-hidden">
-              <img alt="<?php echo htmlspecialchars($pub['titulo']); ?>"
-                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out grayscale-[30%] hover:grayscale-0"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuATr5LQqFzIW3F5HkHxaqPw191cnidtMadzbGucjd6LXijPGX_cHzmhBWiqPp3McC-EI0du1ysNXspSCI1H6_DYUKnb_2VasK3EzHT3mpzzm-Si5EliCjFiJMrRn9Lk0saxYavTuwBFTOC9QsHMpmq6Fievk8KlW5WMTujV4EwiQtvX-SHkRDHpQvO7Z6Yc0IgSUJs-OmOJ6jgB6BuOvmCBY_5ET36r9xl1pyzGPJ3JDAE8h6-d61Xr4G2ulUY2p6i16IXKRvvHfjo" />
-              <div
-                class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <a class="w-20 h-20 rounded-full glass-effect flex items-center justify-center hover:scale-110 transition-transform duration-300"
-                  href="<?php echo htmlspecialchars($pub['video_url']); ?>" target="_blank"><span class="material-symbols-outlined text-white text-4xl"
-                    style="font-variation-settings:'FILL' 1;">play_arrow</span></a>
+            <article
+              class="bg-white rounded-[2rem] overflow-hidden group editorial-shadow-hover transition-all duration-500 transform hover:-translate-y-4 hover:shadow-2xl cursor-pointer">
+              <div class="relative h-80 overflow-hidden">
+                <img alt="<?php echo htmlspecialchars($pub['titulo']); ?>"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out grayscale-[30%] hover:grayscale-0"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuATr5LQqFzIW3F5HkHxaqPw191cnidtMadzbGucjd6LXijPGX_cHzmhBWiqPp3McC-EI0du1ysNXspSCI1H6_DYUKnb_2VasK3EzHT3mpzzm-Si5EliCjFiJMrRn9Lk0saxYavTuwBFTOC9QsHMpmq6Fievk8KlW5WMTujV4EwiQtvX-SHkRDHpQvO7Z6Yc0IgSUJs-OmOJ6jgB6BuOvmCBY_5ET36r9xl1pyzGPJ3JDAE8h6-d61Xr4G2ulUY2p6i16IXKRvvHfjo" />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <a class="w-20 h-20 rounded-full glass-effect flex items-center justify-center hover:scale-110 transition-transform duration-300"
+                    href="<?php echo htmlspecialchars($pub['video_url']); ?>" target="_blank"><span
+                      class="material-symbols-outlined text-white text-4xl"
+                      style="font-variation-settings:'FILL' 1;">play_arrow</span></a>
+                </div>
+                <div class="absolute top-6 left-6 glass-effect px-4 py-2 rounded-full"><span
+                    class="text-[10px] font-sans font-bold tracking-widest text-primary uppercase"><?php echo htmlspecialchars($pub['categoria_nombre']); ?></span>
+                </div>
               </div>
-              <div class="absolute top-6 left-6 glass-effect px-4 py-2 rounded-full"><span
-                  class="text-[10px] font-sans font-bold tracking-widest text-primary uppercase"><?php echo htmlspecialchars($pub['categoria_nombre']); ?></span></div>
-            </div>
-            <div class="p-10 text-left">
-              <h4
-                class="text-3xl font-serif text-rose-950 leading-tight mb-4 group-hover:text-primary transition-colors">
-                <?php echo htmlspecialchars($pub['titulo']); ?></h4>
-              <p class="text-zinc-500 text-sm font-light leading-relaxed line-clamp-3"><?php echo htmlspecialchars($pub['descripcion']); ?></p>
-            </div>
-          </article>
+              <div class="p-10 text-left">
+                <h4
+                  class="text-3xl font-serif text-rose-950 leading-tight mb-4 group-hover:text-primary transition-colors">
+                  <?php echo htmlspecialchars($pub['titulo']); ?>
+                </h4>
+                <p class="text-zinc-500 text-sm font-light leading-relaxed line-clamp-3">
+                  <?php echo htmlspecialchars($pub['descripcion']); ?>
+                </p>
+              </div>
+            </article>
           <?php endforeach; ?>
         </div>
       </div>
@@ -395,33 +451,40 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
-        <?php 
+        <?php
         $colores_bg = ['primary', 'secondary', 'tertiary'];
-        foreach ($testimonios as $index => $t): 
-            $c_bg = $colores_bg[$index % 3];
-        ?>
-        <div class="bg-white p-10 rounded-[2rem] editorial-shadow-hover transition-all duration-500 hover:-translate-y-4 hover:shadow-xl relative break-inside-avoid shadow-sm border border-rose-50">
-          <div class="mb-6 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-<?php echo $c_bg; ?>-fixed rounded-full flex items-center justify-center text-rose-950 font-serif italic text-lg shadow-sm border border-white uppercase">
-                <?php echo substr($t['nombre_usuario'], 0, 1); ?>
-              </div>
-              <div>
-                <h4 class="font-bold text-rose-950 font-sans tracking-wide text-sm"><?php echo htmlspecialchars($t['nombre_usuario']); ?></h4>
-                <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Felicidad: <?php echo htmlspecialchars($t['nivel_felicidad']); ?>/10</p>
+        foreach ($testimonios as $index => $t):
+          $c_bg = $colores_bg[$index % 3];
+          ?>
+          <div
+            class="bg-white p-10 rounded-[2rem] editorial-shadow-hover transition-all duration-500 hover:-translate-y-4 hover:shadow-xl relative break-inside-avoid shadow-sm border border-rose-50">
+            <div class="mb-6 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 bg-<?php echo $c_bg; ?>-fixed rounded-full flex items-center justify-center text-rose-950 font-serif italic text-lg shadow-sm border border-white uppercase">
+                  <?php echo substr($t['nombre_usuario'], 0, 1); ?>
+                </div>
+                <div>
+                  <h4 class="font-bold text-rose-950 font-sans tracking-wide text-sm">
+                    <?php echo htmlspecialchars($t['nombre_usuario']); ?>
+                  </h4>
+                  <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Felicidad:
+                    <?php echo htmlspecialchars($t['nivel_felicidad']); ?>/10
+                  </p>
+                </div>
               </div>
             </div>
+            <p class="font-serif italic text-zinc-600 text-lg leading-relaxed relative">
+              <span class="absolute -top-4 -left-4 text-4xl text-primary/20 material-symbols-outlined">format_quote</span>
+              <?php echo htmlspecialchars($t['experiencia']); ?>
+            </p>
+            <div class="mt-6 flex gap-1">
+              <?php for ($i = 0; $i < ceil($t['nivel_felicidad'] / 2); $i++): ?>
+                <span class="material-symbols-outlined text-primary text-sm"
+                  style="font-variation-settings: 'FILL' 1;">favorite</span>
+              <?php endfor; ?>
+            </div>
           </div>
-          <p class="font-serif italic text-zinc-600 text-lg leading-relaxed relative">
-            <span class="absolute -top-4 -left-4 text-4xl text-primary/20 material-symbols-outlined">format_quote</span>
-            <?php echo htmlspecialchars($t['experiencia']); ?>
-          </p>
-          <div class="mt-6 flex gap-1">
-            <?php for($i=0; $i < ceil($t['nivel_felicidad']/2); $i++): ?>
-            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-            <?php endfor; ?>
-          </div>
-        </div>
         <?php endforeach; ?>
       </div>
     </section>
@@ -430,7 +493,8 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
     <section id="database-preview" class="py-32 bg-stone-50/50 w-full animate-on-scroll border-t border-rose-100/50">
       <div class="max-w-7xl mx-auto px-8">
         <div class="text-center mb-20">
-          <h2 class="editorial-title text-5xl md:text-7xl text-rose-950 mb-6 font-serif italic text-primary">Database Archive</h2>
+          <h2 class="editorial-title text-5xl md:text-7xl text-rose-950 mb-6 font-serif italic text-primary">Database
+            Archive</h2>
           <p class="font-body text-xl text-zinc-500 leading-relaxed font-light max-w-2xl mx-auto">
             A real-time structural overview of our botanical data ecosystem, powered by MySQL.
           </p>
@@ -452,10 +516,10 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
                 </thead>
                 <tbody class="text-rose-900/80">
                   <?php foreach ($categorias as $cat): ?>
-                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
-                    <td class="px-6 py-4 font-mono text-[10px]"><?php echo $cat['id']; ?></td>
-                    <td class="px-6 py-4"><?php echo htmlspecialchars($cat['nombre']); ?></td>
-                  </tr>
+                    <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
+                      <td class="px-6 py-4 font-mono text-[10px]"><?php echo $cat['id']; ?></td>
+                      <td class="px-6 py-4"><?php echo htmlspecialchars($cat['nombre']); ?></td>
+                    </tr>
                   <?php endforeach; ?>
                 </tbody>
               </table>
@@ -479,12 +543,14 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
                 </thead>
                 <tbody class="text-rose-900/80">
                   <?php foreach ($publicaciones as $pub): ?>
-                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
-                    <td class="px-6 py-4 font-mono text-[10px]"><?php echo $pub['id']; ?></td>
-                    <td class="px-6 py-4 font-serif italic"><?php echo htmlspecialchars($pub['titulo']); ?></td>
-                    <td class="px-6 py-4"><?php echo $pub['id_categoria']; ?></td>
-                    <td class="px-6 py-4 text-[10px] text-zinc-400 uppercase tracking-widest"><?php echo $pub['fecha']; ?></td>
-                  </tr>
+                    <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
+                      <td class="px-6 py-4 font-mono text-[10px]"><?php echo $pub['id']; ?></td>
+                      <td class="px-6 py-4 font-serif italic"><?php echo htmlspecialchars($pub['titulo']); ?></td>
+                      <td class="px-6 py-4"><?php echo $pub['id_categoria']; ?></td>
+                      <td class="px-6 py-4 text-[10px] text-zinc-400 uppercase tracking-widest">
+                        <?php echo $pub['fecha']; ?>
+                      </td>
+                    </tr>
                   <?php endforeach; ?>
                 </tbody>
               </table>
@@ -507,11 +573,15 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
                 </thead>
                 <tbody class="text-rose-900/80">
                   <?php foreach ($testimonios as $t): ?>
-                  <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
-                    <td class="px-6 py-4"><?php echo htmlspecialchars($t['nombre_usuario']); ?></td>
-                    <td class="px-6 py-4"><span class="bg-primary-fixed px-2 py-1 rounded text-[10px] text-primary font-bold"><?php echo $t['nivel_felicidad']; ?>/10</span></td>
-                    <td class="px-6 py-4 italic"><?php echo htmlspecialchars(substr($t['experiencia'], 0, 80)) . (strlen($t['experiencia']) > 80 ? '...' : ''); ?></td>
-                  </tr>
+                    <tr class="border-b border-rose-50 hover:bg-rose-50/30 transition-colors">
+                      <td class="px-6 py-4"><?php echo htmlspecialchars($t['nombre_usuario']); ?></td>
+                      <td class="px-6 py-4"><span
+                          class="bg-primary-fixed px-2 py-1 rounded text-[10px] text-primary font-bold"><?php echo $t['nivel_felicidad']; ?>/10</span>
+                      </td>
+                      <td class="px-6 py-4 italic">
+                        <?php echo htmlspecialchars(substr($t['experiencia'], 0, 80)) . (strlen($t['experiencia']) > 80 ? '...' : ''); ?>
+                      </td>
+                    </tr>
                   <?php endforeach; ?>
                 </tbody>
               </table>
@@ -521,13 +591,115 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
       </div>
     </section>
 
+    <!-- Contribution Section: Add New Inspiration -->
+    <section id="contribution" class="py-32 bg-white w-full animate-on-scroll border-t border-rose-100/50">
+      <div class="max-w-7xl mx-auto px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+          <div class="lg:col-span-5">
+            <div
+              class="inline-block mb-6 px-4 py-1 rounded-full bg-secondary-fixed text-rose-950 text-[10px] font-bold tracking-[0.3em] uppercase border border-rose-200">
+              Community Garden
+            </div>
+            <h2 class="editorial-title text-5xl md:text-7xl text-rose-950 mb-8 leading-tight">Share Your <br><span
+                class="font-serif italic text-primary">Inspiration.</span></h2>
+            <p class="font-body text-xl text-zinc-500 leading-relaxed font-light mb-12">
+              Help us cultivate this sanctuary. Share a thought, a ritual, or a discovery that has nurtured your growth.
+            </p>
+            <div class="flex items-center gap-4 p-6 bg-surface rounded-2xl border border-rose-100 editorial-shadow">
+              <span class="material-symbols-outlined text-primary text-3xl">psychology</span>
+              <p class="text-xs text-rose-900/60 font-semibold uppercase tracking-widest leading-loose">Tu contribución
+                será visible en la sección de Inspiraciones Recientes y en nuestro Archivo Digital.</p>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7">
+            <?php if (!empty($mensaje_exito) && isset($_POST['publicacion_submit'])): ?>
+              <div
+                class="mb-8 p-6 bg-primary-fixed text-on-primary-fixed rounded-2xl flex items-center gap-4 animate-bounce">
+                <span class="material-symbols-outlined">celebration</span>
+                <p class="font-bold uppercase tracking-widest text-[10px]"><?php echo $mensaje_exito; ?></p>
+              </div>
+            <?php endif; ?>
+
+            <?php if (!empty($mensaje_error) && isset($_POST['publicacion_submit'])): ?>
+              <div class="mb-8 p-6 bg-red-100 text-red-950 rounded-2xl flex items-center gap-4 border border-red-200">
+                <span class="material-symbols-outlined">error</span>
+                <p class="font-bold uppercase tracking-widest text-[10px]"><?php echo $mensaje_error; ?></p>
+              </div>
+            <?php endif; ?>
+
+            <div
+              class="glass-effect rounded-[3rem] p-10 md:p-16 editorial-shadow border border-white relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+
+              <form class="space-y-10 relative z-10" method="POST" action="#contribution">
+                <input type="hidden" name="publicacion_submit" value="1">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div class="relative group">
+                    <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Publication
+                      Title</label>
+                    <input name="titulo" required
+                      class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-all text-rose-950 text-lg placeholder:text-zinc-200 font-serif italic group-hover:border-primary/40"
+                      placeholder="The Art of Stillness" type="text" />
+                  </div>
+                  <div class="relative group">
+                    <label
+                      class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Category</label>
+                    <select name="id_categoria" required
+                      class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-all text-rose-950 text-sm appearance-none cursor-pointer group-hover:border-primary/40">
+                      <option value="" disabled selected>Select a path...</option>
+                      <?php foreach ($categorias as $cat): ?>
+                        <option value="<?php echo $cat['id']; ?>"><?php echo htmlspecialchars($cat['nombre']); ?></option>
+                      <?php endforeach; ?>
+                    </select>
+                    <span
+                      class="absolute right-0 bottom-4 material-symbols-outlined text-zinc-300 pointer-events-none">expand_more</span>
+                  </div>
+                </div>
+
+                <div class="relative group">
+                  <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Description /
+                    Thought</label>
+                  <textarea name="descripcion" required
+                    class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-all text-rose-950 text-lg placeholder:text-zinc-200 font-body font-light resize-none group-hover:border-primary/40"
+                    placeholder="Describe the essence of this inspiration..." rows="3"></textarea>
+                </div>
+
+                <div class="relative group">
+                  <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Video URL
+                    (TikTok/Reel)</label>
+                  <input name="video_url"
+                    class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-all text-rose-950 text-sm placeholder:text-zinc-200 font-sans tracking-tight group-hover:border-primary/40"
+                    placeholder="https://vm.tiktok.com/..." type="url" />
+                </div>
+
+                <button type="submit"
+                  class="group flex items-center justify-center gap-6 bg-rose-950 text-white px-12 py-5 rounded-full hover:bg-primary transition-all editorial-shadow font-sans uppercase tracking-[0.2em] text-[11px] font-bold w-full md:w-auto shadow-2xl hover:-translate-y-1">
+                  Plant this Inspiration <span
+                    class="material-symbols-outlined text-sm group-hover:rotate-45 transition-transform duration-500">eco</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="contact"
       class="py-32 w-full max-w-7xl mx-auto px-6 border-t border-rose-100/50 mt-16 animate-on-scroll">
-      <?php if (!empty($mensaje_exito)): ?>
-      <div class="mb-12 p-6 bg-primary-fixed text-on-primary-fixed rounded-2xl flex items-center gap-4 animate-bounce">
-        <span class="material-symbols-outlined">celebration</span>
-        <p class="font-bold uppercase tracking-widest text-[10px]"><?php echo $mensaje_exito; ?></p>
-      </div>
+      <?php if (!empty($mensaje_exito) && isset($_POST['testimonio_submit'])): ?>
+        <div class="mb-12 p-6 bg-primary-fixed text-on-primary-fixed rounded-2xl flex items-center gap-4 animate-bounce">
+          <span class="material-symbols-outlined">celebration</span>
+          <p class="font-bold uppercase tracking-widest text-[10px]"><?php echo $mensaje_exito; ?></p>
+        </div>
+      <?php endif; ?>
+
+      <?php if (!empty($mensaje_error) && isset($_POST['testimonio_submit'])): ?>
+        <div class="mb-12 p-6 bg-red-100 text-red-950 rounded-2xl flex items-center gap-4 border border-red-200">
+          <span class="material-symbols-outlined">error</span>
+          <p class="font-bold uppercase tracking-widest text-[10px]"><?php echo $mensaje_error; ?></p>
+        </div>
       <?php endif; ?>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24 items-center">
@@ -560,26 +732,20 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
               <div class="relative group">
                 <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Your
                   Name</label>
-                <input
-                  name="nombre"
-                  required
+                <input name="nombre" required
                   class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-colors text-rose-950 text-lg placeholder:text-zinc-200 font-body group-hover:border-primary/50"
                   placeholder="Florence Nightingale" type="text" />
               </div>
               <div class="relative group">
-                <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Nivel de Felicidad (1-10)</label>
-                <input
-                  name="felicidad"
-                  type="number" min="1" max="10" value="10"
-                  class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-colors text-rose-950 text-lg placeholder:text-zinc-200 font-body group-hover:border-primary/50"
-                   />
+                <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Nivel de
+                  Felicidad (1-10)</label>
+                <input name="felicidad" type="number" min="1" max="10" value="10"
+                  class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-colors text-rose-950 text-lg placeholder:text-zinc-200 font-body group-hover:border-primary/50" />
               </div>
             </div>
             <div class="relative group">
               <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Experience</label>
-              <textarea
-                name="experiencia"
-                required
+              <textarea name="experiencia" required
                 class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-colors text-rose-950 text-xl placeholder:text-zinc-200 font-serif italic resize-none group-hover:border-primary/50"
                 placeholder="How can we help you grow today?" rows="3"></textarea>
             </div>
