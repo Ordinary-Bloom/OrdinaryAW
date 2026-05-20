@@ -59,5 +59,9 @@ Sigue estos pasos para configurar tu propio "Atelier" localmente:
 Puedes explorar la versión oficial desplegada en el servidor DWES aquí:  
 👉 **[https://alumno3.dwes.site/](https://alumno3.dwes.site/)**
 
+## 🎥 Video de Demostración
+Puedes ver un video sobre el proyecto aquí:  
+👉 **[https://youtu.be/RlNloSRx3-o?is=yihLxGUz6Vwqdxsk](https://youtu.be/RlNloSRx3-o?is=yihLxGUz6Vwqdxsk)**
+
 ---
 *Cultivating the art of living well. We nurture your growth, one petal at a time.*

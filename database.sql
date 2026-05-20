@@ -30,7 +30,8 @@ INSERT INTO publicaciones (titulo, descripcion, video_url, id_categoria) VALUES
 ('Glow Up Mental: Hábitos Diarios', 'Descubre cómo transformar tu mentalidad con pequeños pasos constantes.', 'https://youtu.be/igec_McVFKY?si=DvGWlz83DpH-2nuw', 1),
 ('Rutina Full Body - Sin Equipo', 'Entrenamiento intenso y efectivo para tonificar todo el cuerpo en casa.', 'https://youtu.be/7fSDTZkbO20?si=VRDvtdK6O-XFHtF_', 2),
 ('Skincare Ritual: Piel Radiante', 'Los secretos para una piel luminosa este verano. Productos y técnicas.', 'https://youtu.be/32zVmuct7OQ?si=AmZQ_0d1MHK5WcRZ', 3),
-('Confianza y Autoestima', 'Aprende a amarte y proyectar tu mejor versión al mundo.', 'https://youtu.be/xtXf_2s14gg?si=qCH8XcHuS5fxuCPI', 1);
+('Confianza y Autoestima', 'Aprende a amarte y proyectar tu mejor versión al mundo.', 'https://youtu.be/xtXf_2s14gg?si=qCH8XcHuS5fxuCPI', 1),
+('The Ritual of the Nightly Glow', 'True restoration begins not when we close our eyes, but when we open our intention to the evening.', 'https://youtu.be/Sd0-l_DeK3k?si=EtbUIH09VjOMS8Gx', 3);
 
 -- Creación de la tabla 'testimonios'
 CREATE TABLE testimonios (
