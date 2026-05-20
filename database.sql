@@ -46,3 +46,13 @@ INSERT INTO testimonios (nombre_usuario, nivel_felicidad, experiencia) VALUES
 ('Clara Márquez', 9, 'Desde que dedico tiempo a mis propios rituales de cuidado, mi ansiedad ha bajado muchísimo y me siento más conectada conmigo misma.'),
 ('Laura Gutiérrez', 10, 'El autoconocimiento me abrió las puertas a una paz mental inmensa. Ahora confío en mis decisiones y vivo con mayor plenitud.'),
 ('Andrés Silva', 8, 'Empezar a ejercitarme suavemente no solo mejoró mi salud física, sino que elevó mi estado de ánimo y mi amor propio.');
+
+-- Creación de la tabla 'usuarios'
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+

@@ -689,18 +689,17 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                   <div class="relative group">
-                    <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Publication
-                      Title</label>
+                    <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Título de la Publicación</label>
                     <input name="titulo" required
                       class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-all text-rose-950 text-lg placeholder:text-zinc-200 font-serif italic group-hover:border-primary/40"
-                      placeholder="The Art of Stillness" type="text" />
+                      placeholder="El Arte de la Calma" type="text" />
                   </div>
                   <div class="relative group">
                     <label
-                      class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Category</label>
+                      class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Categoría</label>
                     <select name="id_categoria" required
                       class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-all text-rose-950 text-sm appearance-none cursor-pointer group-hover:border-primary/40">
-                      <option value="" disabled selected>Select a path...</option>
+                      <option value="" disabled selected>Selecciona un camino...</option>
                       <?php foreach ($categorias as $cat): ?>
                         <option value="<?php echo $cat['id']; ?>"><?php echo htmlspecialchars($cat['nombre']); ?></option>
                       <?php endforeach; ?>
@@ -711,11 +710,10 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
                 </div>
 
                 <div class="relative group">
-                  <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Description /
-                    Thought</label>
+                  <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Descripción / Pensamiento</label>
                   <textarea name="descripcion" required
                     class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-all text-rose-950 text-lg placeholder:text-zinc-200 font-body font-light resize-none group-hover:border-primary/40"
-                    placeholder="Describe the essence of this inspiration..." rows="3"></textarea>
+                    placeholder="Describe la esencia de esta inspiración..." rows="3"></textarea>
                 </div>
 
                 <div class="relative group">
@@ -728,7 +726,7 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
 
                 <button type="submit"
                   class="group flex items-center justify-center gap-6 bg-rose-950 text-white px-12 py-5 rounded-full hover:bg-primary transition-all editorial-shadow font-sans uppercase tracking-[0.2em] text-[11px] font-bold w-full md:w-auto shadow-2xl hover:-translate-y-1">
-                  Plant this Inspiration <span
+                  Plantar esta Inspiración <span
                     class="material-symbols-outlined text-sm group-hover:rotate-45 transition-transform duration-500">eco</span>
                 </button>
               </form>
@@ -775,11 +773,10 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
             <input type="hidden" name="testimonio_submit" value="1">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div class="relative group">
-                <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Your
-                  Name</label>
+                <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Tu Nombre</label>
                 <input name="nombre" required
                   class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-colors text-rose-950 text-lg placeholder:text-zinc-200 font-body group-hover:border-primary/50"
-                  placeholder="Florence Nightingale" type="text" />
+                  placeholder="Tu nombre completo" type="text" />
               </div>
               <div class="relative group">
                 <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Nivel de
@@ -789,15 +786,15 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
               </div>
             </div>
             <div class="relative group">
-              <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Experience</label>
+              <label class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-3 block">Experiencia</label>
               <textarea name="experiencia" required
                 class="w-full bg-transparent border-b border-rose-200 focus:border-primary py-3 outline-none transition-colors text-rose-950 text-xl placeholder:text-zinc-200 font-serif italic resize-none group-hover:border-primary/50"
-                placeholder="How can we help you grow today?" rows="3"></textarea>
+                placeholder="¿Cómo podemos ayudarte a florecer hoy?" rows="3"></textarea>
             </div>
             <button
               class="group flex items-center justify-center gap-6 bg-rose-950 text-white px-12 py-5 rounded-full hover:bg-primary transition-all editorial-shadow font-sans uppercase tracking-[0.2em] text-[11px] font-bold w-full md:w-auto shadow-2xl hover:-translate-y-1"
               type="submit">
-              Send Message <span
+              Enviar Mensaje <span
                 class="material-symbols-outlined text-sm group-hover:translate-x-2 transition-transform duration-300">east</span>
             </button>
           </form>
@@ -858,7 +855,7 @@ $testimonios = $pdo->query("SELECT * FROM testimonios ORDER BY fecha DESC")->fet
           class="material-symbols-outlined text-zinc-400 hover:text-rose-950 transition-colors text-3xl">close</button>
       </div>
       <div class="p-10 bg-surface/50 min-h-[250px]">
-        <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-primary mb-6">Suggestions</p>
+        <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-primary mb-6">Sugerencias</p>
         <div class="flex flex-wrap gap-4">
           <span
             class="px-6 py-3 bg-white rounded-full text-[11px] font-bold tracking-[0.1em] text-rose-950 uppercase border border-rose-100 hover:border-primary hover:bg-primary/5 cursor-pointer transition-all shadow-sm">Ritual
